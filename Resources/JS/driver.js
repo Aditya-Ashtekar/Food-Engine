@@ -56,8 +56,8 @@ function populateUsers() {
     var body = {
         key : "Hello"
 	};
-	userid = "4894eeb4f62f930b15d302bd3bda973f";
-	// userid = window.localStorage.getItem('userid');
+	// userid = "4894eeb4f62f930b15d302bd3bda973f";
+	userid = window.localStorage.getItem('userid');
      var params = {user_name : userid, user_id:userid};
       var additionalParams = {headers: {
       'Content-Type':"application/json"
