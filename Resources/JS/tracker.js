@@ -16,8 +16,8 @@ $( document ).ready(function() {
 	dest = {};
 	stream_name = 'location-stream';
 	var credentials = new AWS.Credentials();
-	credentials.accessKeyId = 'accessKeyId';
-	credentials.secretAccessKey = 'accesskey';
+	credentials.accessKeyId = 'AKIAZZ3DYKIMZKFT23PW';
+	credentials.secretAccessKey = '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';
 	AWS.config.region = 'us-east-1';
 	AWS.config.credentials = credentials;
 	kinesis = new AWS.Kinesis();

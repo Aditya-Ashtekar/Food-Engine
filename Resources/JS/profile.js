@@ -5,11 +5,6 @@ var accessToken;
 $('document').ready(function () {
 	//console.log("start");
 	var url = window.location.href;
-	/*if (url.includes('access_token')) {
-		console.log('changing access token');
-		accessToken = url.split('#')[1].split('&')[1].split('=')[1];
-		window.localStorage.setItem('access-token', accessToken);
-	}*/
 	if (url.includes('code')) {
 		console.log('changing code token');
 		accessToken = url.split('=')[1];
@@ -18,17 +13,16 @@ $('document').ready(function () {
 	else {
 		accessToken = window.localStorage.getItem('access-token');
 	}
-	//if (window.localStorage.getItem('access-token')==null || window.localStorage.getItem('access-token')=='null')
-	//	window.location = "signout.html";
+	if (window.localStorage.getItem('access-token')==null || window.localStorage.getItem('access-token')=='null')
+		window.location = "signout.html";
     apigClient = apigClientFactory.newClient();
     var body = {
-        key : "Hello"
+        "access-token" : accessToken
     };
      var params = {username : accessToken, user_id : accessToken};
       var additionalParams = {headers: {
       'Content-Type':"application/json"
     }};
-	//console.log("username is "+username)
     apigClient.profileGet(params, body)
         .then(function (result) {
 		  if (result.invalid_access_token=='1' || result.data.invalid_access_token=='1')
@@ -36,7 +30,6 @@ $('document').ready(function () {
 		  populateFields(JSON.parse(result.data.body));
         }).catch(function (result) {
           alert('Permission Denied')
-          console.log("result on failure is "+result);
           console.log("Something went wrong!");
         });  
 	$( '#activity, #sex, #age, #height, #weight').change(function() {
@@ -76,11 +69,8 @@ $('document').ready(function () {
   });
 
 function populateFields(data) {
-	console.log("user id is "+data.user_id);
 	window.localStorage.setItem('userid', data.user_id);
 	pageNum = data.completion_level;
-	console.log("pageNum type is "+(typeof pageNum));
-	console.log("pageNum is "+pageNum);
 	if (pageNum<5)
 		redirectPage(pageNum);
 	if (Object.keys(data).length>2) {
@@ -114,11 +104,11 @@ function redirectPage(pageNum) {
 }
 
 function update() {
-	console.log('Line 118 reached')
 	$('#loading').show();
+	userid = window.localStorage.getItem('userid');
 	var body = {
 		"user_id" : userid,
-		"page_num" : pageNum,
+		"page_num" : 1,
 		"first_name" : $('#firstname').val(),
 		"last_name" : $('#lastname').val(),
 		"phone" : $('#phone').val(),
@@ -131,20 +121,14 @@ function update() {
 		"deitary_restrictions" : $('#dietary').val(), // vegan, ovovegan, lacvegan, lacovovegan, pesce
 		"food_allergies" : $('#allergy').val()
 	};
-	console.log("body from update is "+body);
-	var username;
-	var params = {username: userid, body: body};
-	console.log("body 2 is :"+body);
-	console.log("params is "+params)
+	console.log("user id is "+userid);
+	var params = {username: userid};
 	apigClient.profilePost(params, body)
 	.then(function (result) {
 	  $('#submitnote').removeAttr('hidden');
-	  console.log("pageNum from update is "+pageNum)
 	  window.location.href= 'preferences.html';
-	  console.log("result logged is "+result);
 	}).catch(function (result) {
 	  alert('Permission Denied');
-	  setTimeout(function(){ console.log("result 2 is : "+result);}, 150000);
 	  console.log("Something went wrong!");
 	});
 	return false;

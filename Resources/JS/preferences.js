@@ -9,10 +9,7 @@ $('document').ready(function () {
 		window.location = "signout.html";
     apigClient = apigClientFactory.newClient();
 	userid = window.localStorage.getItem('userid');
-	// print("use1rid from localStorage is "+userid);
-	//userid = "4894eeb4f62f930b15d302bd3bda973f";
 	var recomuserid = userid+'_'+recom_flag;
-	//console.log(userid);
     var params = {username : recomuserid, user_id:recomuserid};
     var additionalParams = {headers: {
       'Content-Type':"application/json"
@@ -20,7 +17,6 @@ $('document').ready(function () {
 	var body = {
         key : "Hello"
     };
-	//populateFields('null');
 	apigClient.preferencesGet(params, body)
         .then(function (result) {
           console.log(result);
@@ -38,7 +34,6 @@ function getRecommendation() {
 	userid = window.localStorage.getItem('userid');
 	recom_flag='1';
 	var recomuserid = userid+'_'+recom_flag;
-	//console.log(userid);
     var params = {username : recomuserid, user_id:recomuserid};
     var additionalParams = {headers: {
       'Content-Type':"application/json"
@@ -60,16 +55,8 @@ function getRecommendation() {
 
 function setRecommendation() {
 	console.log('Inside setRecommendation');
-	// data_received = JSON.stringify(data_received.body);
-	// console.log(JSON.stringify(data_received, undefined, 2));
-	
-	console.log(data_received.body[0])
-	console.log(typeof data_received.body)
+
 	data_received = JSON.parse(data_received.body)
-	// console.log(Object.keys(data));
-	// console.log(data_received.body.breakfast);
-	// console.log(data_received["body"]);
-	// console.log(JSON.stringify(data_received.body));
 	$('#monbfcui').val(data_received.breakfast[Math.floor((Math.random() * 27) + 1)]);
 	$('#monlncui').val(data_received.lunch[Math.floor((Math.random() * 27) + 1)]);
 	$('#monsncui').val(data_received.snack[Math.floor((Math.random() * 27) + 1)]);
@@ -141,11 +128,7 @@ function update() {
 	apigClient.preferencesPost(params, body)
 	.then(function (result) {
 	  $('#submitnote').removeAttr('hidden');
-	  if (pageNum<5)
-		window.location.href= 'calendar.html';
-	  else
-		window.location.href= 'preferences.html';
-	  console.log(result);    
+	  window.location.href= 'calendar.html';
 	}).catch(function (result) {
 	  alert('Permission Denied')
 	  console.log(result);
