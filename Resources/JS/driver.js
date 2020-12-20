@@ -11,14 +11,13 @@ var speedFactor = 40;
 var apigClient;
 var userid;
 
-
 $( document ).ready(function() {
 	if (window.localStorage.getItem('access-token')==null || window.localStorage.getItem('access-token')=='null')
 		window.location = "signout.html";
 	stream_name = 'location-stream';
 	var credentials = new AWS.Credentials();
-	credentials.accessKeyId = 'AKIAZZ3DYKIMZKFT23PW';
-	credentials.secretAccessKey = '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';
+	credentials.accessKeyId = 'accessKey';
+	credentials.secretAccessKey = 'secretKey';
 	AWS.config.region = 'us-east-1';
 	AWS.config.credentials = credentials;
     console.log( "ready!" );
@@ -27,10 +26,9 @@ $( document ).ready(function() {
 	{
 		   google.maps.event.trigger(map, 'resize');                
 	}
-	userid = window.localStorage.getItem('userid');
+	
 	$('#update-button').on('click', function() {
 		$('#loading').show();
-		console.log('userid2 is ' + userid);
 		var params = {username : userid, user_id : userid};
 		var body = {
 			"user_id" : $('#user option:selected').attr('user_id'),
@@ -38,8 +36,7 @@ $( document ).ready(function() {
 		}
 		apigClient.driverPost(params, body)
 		.then(function (result) {
-		//   var dest_add = result.data.body.slice(1, -2);
-		  var dest_add = "0";
+		  var dest_add = result.data.body.slice(1, -2);
 		  console.log(dest_add);
 		  setAnimatedRoute(dest_add);
 		}).catch(function (result) {
@@ -53,34 +50,30 @@ $( document ).ready(function() {
 
 function populateUsers() {
 	apigClient = apigClientFactory.newClient({
-        accessKey: 'AKIAZZ3DYKIMZKFT23PW',
-        secretKey: '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',
+        accessKey: 'accessKey',
+        secretKey: 'secretKey',
       });
     var body = {
         key : "Hello"
-	};
-	// userid = "4894eeb4f62f930b15d302bd3bda973f";
+    };
 	userid = window.localStorage.getItem('userid');
-	console.log('userid is' + userid);
      var params = {user_name : userid, user_id:userid};
       var additionalParams = {headers: {
       'Content-Type':"application/json"
     }};
 	apigClient.driverGet(params, body)
         .then(function (result) {
-		//   result = JSON.stringify(result.body);
-		//   result = JSON.parse(result);
-		  console.log('result is ' + result.data);
+          console.log(result);
 		  var users = result.data.users;
 			let dropdown = document.getElementById('user');
 			let option;
-			// for (let i = 0; i < users.length; i++) {
-				// option = document.createElement('option');
-				// option.text = (users[i]['first_name']+" "+users[i]['last_name']);
-				// option.setAttribute('data-tokens', (users[i]['first_name']+" "+users[i]['last_name']));
-				// option.setAttribute('user_id', users[i]['user_id'])
-				// dropdown.add(option);
-			// }
+			for (let i = 0; i < users.length; i++) {
+			  option = document.createElement('option');
+			  option.text = (users[i]['first_name']+" "+users[i]['last_name']);
+			  option.setAttribute('data-tokens', (users[i]['first_name']+" "+users[i]['last_name']));
+			  option.setAttribute('user_id', users[i]['user_id'])
+			  dropdown.add(option);
+			}
 			$('.selectpicker').selectpicker('refresh');
 			$('#loading').hide();
         }).catch(function (result) {
@@ -96,8 +89,8 @@ function setAnimatedRoute(dest_add) {
 		geocoder.geocode({'address':dest_add}, function (results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
 				var temp = results[0].geometry.location;
-				// dest_geocode = {"lat" : temp.lat(), "lng" : temp.lng()};
-				dest_geocode = {"lat":40.6949022,"lng":-73.98565630000002};
+				dest_geocode = {"lat" : temp.lat(), "lng" : temp.lng()};
+				//dest_geocode = {"lat":40.6949022,"lng":-73.98565630000002};
 				var dest_resp = dest_geocode.lat+","+dest_geocode.lng;
 				
 				removeDirections();

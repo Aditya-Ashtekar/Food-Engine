@@ -167,7 +167,7 @@ function update() {
 	apigClient.paymentPost(params, body)
 	.then(function (result) {
 	  $('#submitnote').removeAttr('hidden');
-	  setTimeout(function(){ window.location.href= 'profile.html';}, 1500);
+	  window.location.href= 'profile.html';
 	  console.log(result);    
 	}).catch(function (result) {
 	  alert('Permission Denied')
