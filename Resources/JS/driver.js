@@ -31,12 +31,16 @@ $( document ).ready(function() {
 		$('#loading').show();
 		var params = {username : userid, user_id : userid};
 		var body = {
-			"user_id" : $('#user option:selected').attr('user_id'),
+			"user_id" : userid,
 			"meal_type" : $('#mealtype').val()
 		}
 		apigClient.driverPost(params, body)
 		.then(function (result) {
+		  console.log(JSON.stringify(result));
+		  //data = JSON.parse(result.data.body);
+		  //console.log(data);
 		  var dest_add = result.data.body.slice(1, -2);
+		  console.log("Destination address");
 		  console.log(dest_add);
 		  setAnimatedRoute(dest_add);
 		}).catch(function (result) {
@@ -49,10 +53,7 @@ $( document ).ready(function() {
 });
 
 function populateUsers() {
-	apigClient = apigClientFactory.newClient({
-        accessKey: 'accessKey',
-        secretKey: 'secretKey',
-      });
+	apigClient = apigClientFactory.newClient();
     var body = {
         key : "Hello"
     };
@@ -63,9 +64,10 @@ function populateUsers() {
     }};
 	apigClient.driverGet(params, body)
         .then(function (result) {
-          console.log(result);
-		  var users = result.data.users;
-			let dropdown = document.getElementById('user');
+		  data = JSON.parse(result.data.body);
+          console.log(data);
+		  var users = data.users;
+			/*let dropdown = document.getElementById('user');
 			let option;
 			for (let i = 0; i < users.length; i++) {
 			  option = document.createElement('option');
@@ -74,7 +76,7 @@ function populateUsers() {
 			  option.setAttribute('user_id', users[i]['user_id'])
 			  dropdown.add(option);
 			}
-			$('.selectpicker').selectpicker('refresh');
+			$('.selectpicker').selectpicker('refresh');*/
 			$('#loading').hide();
         }).catch(function (result) {
           alert('Permission Denied')

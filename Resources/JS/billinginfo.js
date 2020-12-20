@@ -17,8 +17,8 @@ $('document').ready(function () {
     }};
     apigClient.paymentGet(params, body)
         .then(function (result) {
-          console.log(result);
-		  populateFields(result.data);
+          console.log(JSON.parse(result.data.body));
+		  populateFields(JSON.parse(result.data.body));
         }).catch(function (result) {
           alert('Permission Denied')
           console.log(result);
@@ -106,9 +106,11 @@ $('creditCardEntry1').on('change', function() {
 function populateFields(data) {
 	userid = userid;
 	pageNum = parseInt(data.page_num);
-	if (pageNum<5)
-		$('#redirect-bar').remove();
+	//if (pageNum<5)
+		//$('#redirect-bar').remove();
 	var temp = new Date(data.start_date_calendar);
+	console.log("Date is")
+	console.log(temp)
 	start_date = (temp.getMonth()+1) + '/' + (temp.getDate()+1) + '/' + temp.getFullYear();
 	//data = {};
 	if (Object.keys(data).length>2) {
@@ -131,12 +133,12 @@ function populateFields(data) {
 		$('#total-bill').val(data.bill);
 		$('.submit-button').val('Update!');
 	} else {
-		/*$('#startdate, #enddate').datepicker({
+		$('#startdate, #enddate').datepicker({
 			format: 'mm/dd/yyyy',
 			startDate: start_date,
 			todayHighlight: true,
 			autoclose: true
-		});*/
+		});
 		changeFlag = 1;
 		$("#startdate").val(start_date);
 		setEndDate();
@@ -163,11 +165,10 @@ function update() {
 		"zipcode" : $('#zip').val(),
 		"bill" : $('#total-bill').text().split('$')[1]
 	};
-	console.log(body);
 	apigClient.paymentPost(params, body)
 	.then(function (result) {
 	  $('#submitnote').removeAttr('hidden');
-	  window.location.href= 'profile.html';
+	  window.location.href= 'thankyou.html';
 	  console.log(result);    
 	}).catch(function (result) {
 	  alert('Permission Denied')

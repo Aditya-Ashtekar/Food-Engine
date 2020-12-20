@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			userid = userid;
 			final_dict['user_id']=userid;
 			pageNum = parseInt(data.page_num);
-			if (pageNum<5)
-				$('#redirect-bar').remove();
+			//if (pageNum<5)
+				//$('#redirect-bar').remove();
 			final_dict['page_num']=pageNum;
 			console.log('page_num is '+pageNum);
 			delete data.page_num;

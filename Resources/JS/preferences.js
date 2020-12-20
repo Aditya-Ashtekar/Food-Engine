@@ -19,8 +19,8 @@ $('document').ready(function () {
     };
 	apigClient.preferencesGet(params, body)
         .then(function (result) {
-          console.log(result);
-		  populateFields(result.data);
+          console.log(JSON.parse(result.data.body));
+		  populateFields(JSON.parse(result.data.body));
         }).catch(function (result) {
           alert('Permission Denied')
           console.log(result);
@@ -43,9 +43,8 @@ function getRecommendation() {
     };
 	apigClient.preferencesGet(params, body)
         .then(function (result) {
-          console.log(result);
-		  console.log(typeof result.data);
-		  populateFields(result.data);
+          console.log(JSON.parse(result.data.body));
+		  populateFields(JSON.parse(result.data.body));
         }).catch(function (result) {
           alert('Permission Denied')
           console.log(result);
@@ -54,9 +53,7 @@ function getRecommendation() {
 }
 
 function setRecommendation() {
-	console.log('Inside setRecommendation');
 
-	data_received = JSON.parse(data_received.body)
 	$('#monbfcui').val(data_received.breakfast[Math.floor((Math.random() * 27) + 1)]);
 	$('#monlncui').val(data_received.lunch[Math.floor((Math.random() * 27) + 1)]);
 	$('#monsncui').val(data_received.snack[Math.floor((Math.random() * 27) + 1)]);
@@ -138,7 +135,6 @@ function update() {
 }
 
 function populateFields(getResponse) {
-	//const url = 'https://mymacrochefs3.s3.amazonaws.com/Resources/Data/data.json';
 	const url = 'https://macrochef.s3.amazonaws.com/Resources/Data/data.json';
 
 	fetch(url)  
@@ -189,8 +185,8 @@ function populateFields(getResponse) {
 			data = getResponse;
 			userid = userid;
 			pageNum = parseInt(data.page_num);
-			if (pageNum<5)
-				$('#redirect-bar').remove();
+			//if (pageNum<5)
+				//$('#redirect-bar').remove();
 			if ("selection" in data && Object.keys(data.selection).length>0) {
 				$('#monbfcui').val(data.selection.monday_breakfast);
 				$('#monlncui').val(data.selection.monday_lunch);

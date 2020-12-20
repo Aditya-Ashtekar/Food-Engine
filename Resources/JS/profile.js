@@ -90,7 +90,7 @@ function populateFields(data) {
 }
 
 function redirectPage(pageNum) {
-	$('#redirect-bar').remove();
+	//$('#redirect-bar').remove();
 	console.log("redirecting to page "+pageNum);
 	if (pageNum==1) {
 		window.location = "preferences.html";

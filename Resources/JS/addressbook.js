@@ -58,8 +58,8 @@ function populateFields(data) {
 	pageNum = parseInt(data.page_num);
 	console.log(JSON.stringify(data));
 	console.log("pageNum is "+pageNum);
-	if (pageNum<5)
-		$('#redirect-bar').remove();
+	//if (pageNum<5)
+		//$('#redirect-bar').remove();
 	if (Object.keys(data).length>2) {
 		$('#bfaddress-line1').val(data.breakfast_address1);
 		$('#bfaddress-line2').val(data.breakfast_address2);
