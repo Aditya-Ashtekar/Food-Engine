@@ -168,7 +168,7 @@ function update() {
 	apigClient.paymentPost(params, body)
 	.then(function (result) {
 	  $('#submitnote').removeAttr('hidden');
-	  window.location.href= 'thankyou.html';
+	  window.location.href= 'livetracking.html';
 	  console.log(result);    
 	}).catch(function (result) {
 	  alert('Permission Denied')
